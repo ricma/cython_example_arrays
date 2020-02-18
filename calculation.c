@@ -3,22 +3,22 @@
 /**
  * Fill given array with numbers
  */
-int example_calculation(int N1, int M1, int *data1_in,
-                        int N2, int *data2_in,
-                        int N3, int M3, int *data3_out,
-                        int N4, int *data4_out)
+int example_calculation(my_uint N1, my_uint M1, my_uint *data1_in,
+                        my_uint N2, my_uint *data2_in,
+                        my_uint N3, my_uint M3, my_uint *data3_out,
+                        my_uint N4, my_uint *data4_out)
 {
   // FIXME: We are not using the input array here ...
   // but it is just an example anyway ...
-  for (int i=0; i<N3; ++i)
+  for (unsigned int i=0; i<N3; ++i)
     {
-      for (int j=0; j<M3; ++i)
+      for (unsigned int j=0; j<M3; ++i)
         {
           data3_out[M3 * i + j] = lround(sin(1.0 * i + j));
         }
     }
 
-  for (int i=0; i<N4; ++i)
+  for (unsigned int i=0; i<N4; ++i)
     {
       data4_out[i] = lround(sin(1.4 * i));
     }
