@@ -1,0 +1,33 @@
+# -*- mode: makefile -*-
+# Note: This is a _very_ manual file to make it more obvious what
+# happens and which steps are necessary!
+#
+# Call it like
+#   make -f Makefile.manually all
+# to see that it works
+
+CFLAGS_CYTHON=$(shell python3-config --cflags) ${INC} \
+    -shared -pthread -fPIC -fwrapv -fno-strict-aliasing
+
+PYLIBS=$(shell python3-config --ldflags)
+
+all:
+# call all the steps manually one after another
+	make calculation.o
+	make calculate_wrapper.c
+	make calculate.so
+	python3 example.py
+
+# Compile the object code for the C-code
+calculation.o: calculation.c calculation.h
+	gcc -O2 -c calculation.c -o calculation.o
+
+# create the cython wrapper
+# make it depend on calculation.h to trigger recreation if the header
+# changed.
+calculate_wrapper.c: calculate.pyx calculation.h
+	cython -3 -a calculate.pyx -o calculate_wrapper.c
+
+# create the shared object to be used in Python
+calculate.so: calculate_wrapper.c calculation.h calculation.o
+	gcc ${CFLAGS_CYTHON} -o calculate.so calculate_wrapper.c calculation.o ${PYLIBS}
