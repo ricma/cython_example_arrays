@@ -35,11 +35,14 @@ def example_main():
     output_1d_expected = np.zeros(output_1d.shape, dtype=np.uint32)
     for i in range(output_1d_expected.shape[0]):
         output_1d_expected[i] = int(np.round(np.abs(120 * np.sin(1.4 * i))))
+    output_1d_expected += input_data_1d[:len(output_1d)]
 
     output_2d_expected = np.zeros(output_2d.shape, dtype=np.uint32)
     for i in range(output_2d_expected.shape[0]):
         for j in range(output_2d_expected.shape[0]):
             output_2d_expected[i, j] = int(np.round(np.abs(100 * np.sin(i + j))))
+    output_2d_expected += input_data_2d[:output_2d.shape[0],
+                                        :output_2d.shape[1]]
 
     np.testing.assert_array_almost_equal(
         output_2d, output_2d_expected,

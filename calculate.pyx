@@ -57,10 +57,15 @@ def example_calculate(
         (N3, M3), dtype=np.uint32)
 
     # call the C-code
-    example_calculation(
+    cdef int status
+    status = example_calculation(
         N1, M1, <UINT_t *> input_data_2d.data,
         N2, <UINT_t *> input_data_1d.data,
         N3, M3, <UINT_t *> output_data_2d.data,
         N4, <UINT_t *> output_data_1d.data)
+
+    if status != 0:
+        raise RuntimeError(
+            "C-code not successful! (status={0})".format(status))
 
     return (output_data_2d, output_data_1d)
