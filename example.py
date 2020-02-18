@@ -24,6 +24,9 @@ def example_main():
     #   --> should core dump
     # % gdb python3 core
     # should start the debugger and get you where the exception happened.
+    # you can then type at the gdb prompt:
+    # (gdb) run example.py
+    # and it should drop you to where the SIGSEGV is raised
     output_2d, output_1d = example_calculate_dbg(
         input_data_2d,
         input_data_1d)
