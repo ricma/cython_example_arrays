@@ -13,8 +13,9 @@ def example_main():
     Example call to the cython function
     """
     # this dataype is `dtype('int64')` by default
-    input_data_1d = np.array([1, 2, 3])
-    input_data_2d = np.array([[10, 20], [30, 40]])
+    # which is `long` in C.
+    input_data_1d = np.array([1, 2, 3], dtype=np.uint32)
+    input_data_2d = np.array([[10, 20], [30, 40]], dtype=np.uint32)
 
     # FIXME: We call the dbg version for now
     # To use that:
