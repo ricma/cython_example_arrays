@@ -6,10 +6,13 @@
 #   make -f Makefile.manually all
 # to see that it works
 
+INC =
+LIBS =
+
 CFLAGS_CYTHON=$(shell python3-config --cflags) ${INC} \
     -shared -pthread -fPIC -fwrapv -fno-strict-aliasing
 
-PYLIBS=$(shell python3-config --ldflags)
+PYLIBS=$(shell python3-config --ldflags) ${LIBS}
 
 all:
 # call all the steps manually one after another
@@ -22,16 +25,30 @@ all:
 calculation.o: calculation.c calculation.h
 	gcc -O2 -c calculation.c -o calculation.o
 
+calculation_dbg.o: calculation.c calculation.h
+	gcc -O0 -g -c calculation.c -o calculation_dbg.o
+
 # create the cython wrapper
 # make it depend on calculation.h to trigger recreation if the header
 # changed.
 calculate_wrapper.c: calculate.pyx calculation.h
 	cython -3 -a calculate.pyx -o calculate_wrapper.c
 
+# cython complains if that file hasn't got the same name as the .so file later :-(
+# So we need to do this here
+calculate_dbg.pyx: calculate.pyx
+	cp calculate.pyx calculate_dbg.pyx
+
+calculate_dbg_wrapper.c: calculate_dbg.pyx calculation.h
+	cython -3 -a --gdb calculate_dbg.pyx -o calculate_dbg_wrapper.c
+
 # create the shared object to be used in Python
 calculate.so: calculate_wrapper.c calculation.h calculation.o
 	g++ ${CFLAGS_CYTHON} -o calculate.so calculate_wrapper.c calculation.o ${PYLIBS}
 
+# create the shared object to be used in Python
+calculate_dbg.so: calculate_dbg_wrapper.c calculation.h calculation_dbg.o
+	g++ -O0 $(filter-out -O3,${CFLAGS_CYTHON}) -o calculate_dbg.so calculate_dbg_wrapper.c calculation_dbg.o ${PYLIBS}
 
 .PHONY:
 clean:
