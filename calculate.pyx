@@ -63,4 +63,4 @@ def example_calculate(
         N3, M3, <UINT_t *> output_data_2d.data,
         N4, <UINT_t *> output_data_1d.data)
 
-    return (output_data_1d, output_data_2d)
+    return (output_data_2d, output_data_1d)

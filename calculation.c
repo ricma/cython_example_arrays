@@ -12,15 +12,15 @@ int example_calculation(my_uint N1, my_uint M1, my_uint *data1_in,
   // but it is just an example anyway ...
   for (unsigned int i=0; i<N3; ++i)
     {
-      for (unsigned int j=0; j<M3; ++i)
+      for (unsigned int j=0; j<M3; ++j)
         {
-          data3_out[M3 * i + j] = lround(sin(1.0 * i + j));
+          data3_out[M3 * i + j] = lround(fabs(100 * sin(1.0 * i + j)));
         }
     }
 
   for (unsigned int i=0; i<N4; ++i)
     {
-      data4_out[i] = lround(sin(1.4 * i));
+      data4_out[i] = lround(fabs(120 * sin(1.4 * i)));
     }
 
   return 0;

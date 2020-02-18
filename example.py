@@ -14,7 +14,7 @@ def example_main():
     """
     # this dataype is `dtype('int64')` by default
     # which is `long` in C.
-    input_data_1d = np.array([1, 2, 3], dtype=np.uint32)
+    input_data_1d = np.array(30 * [1], dtype=np.uint32)
     input_data_2d = np.array([[10, 20], [30, 40]], dtype=np.uint32)
 
     # FIXME: We call the dbg version for now
@@ -31,7 +31,25 @@ def example_main():
         input_data_2d,
         input_data_1d)
 
-    print(f"1d: {output_1d}\n2d: {output_2d}")
+    # test against the expected output:
+    output_1d_expected = np.zeros(output_1d.shape, dtype=np.uint32)
+    for i in range(output_1d_expected.shape[0]):
+        output_1d_expected[i] = int(np.round(np.abs(120 * np.sin(1.4 * i))))
+
+    output_2d_expected = np.zeros(output_2d.shape, dtype=np.uint32)
+    for i in range(output_2d_expected.shape[0]):
+        for j in range(output_2d_expected.shape[0]):
+            output_2d_expected[i, j] = int(np.round(np.abs(100 * np.sin(i + j))))
+
+    np.testing.assert_array_almost_equal(
+        output_2d, output_2d_expected,
+        err_msg="2d array not as expected!")
+
+    np.testing.assert_array_almost_equal(
+        output_1d, output_1d_expected,
+        err_msg="1d array not as expected!")
+
+    print(f"2d: {output_2d}\n1d: {output_1d}")
 
 if __name__ == "__main__":
 

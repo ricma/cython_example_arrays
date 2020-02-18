@@ -19,6 +19,10 @@ all:
 	make -f Makefile.manually calculation.o
 	make -f Makefile.manually calculate_wrapper.c
 	make -f Makefile.manually calculate.so
+
+	make -f Makefile.manually calculation_dbg.o
+	make -f Makefile.manually calculate_dbg_wrapper.c
+	make -f Makefile.manually calculate_dbg.so
 	python3 example.py
 
 # Compile the object code for the C-code
