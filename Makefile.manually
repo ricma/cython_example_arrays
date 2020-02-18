@@ -30,7 +30,7 @@ calculate_wrapper.c: calculate.pyx calculation.h
 
 # create the shared object to be used in Python
 calculate.so: calculate_wrapper.c calculation.h calculation.o
-	gcc ${CFLAGS_CYTHON} -o calculate.so calculate_wrapper.c calculation.o ${PYLIBS}
+	g++ ${CFLAGS_CYTHON} -o calculate.so calculate_wrapper.c calculation.o ${PYLIBS}
 
 
 .PHONY:
